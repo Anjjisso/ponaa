@@ -1,0 +1,97 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id_user  Int    @id @default(autoincrement())
+  email    String @unique @db.VarChar(100)
+  password String @db.VarChar(100)
+  role     Role
+
+  guru  Guru?
+  siswa Siswa?
+}
+
+model Guru {
+  id_guru Int    @id @default(autoincrement())
+  nama    String @db.VarChar(500)
+  nip     Int
+
+  user_id Int  @unique
+  user    User @relation(fields: [user_id], references: [id_user])
+
+  absens Absen[]
+}
+
+model Siswa {
+  id_siswa Int    @id @default(autoincrement())
+  nama     String @db.VarChar(500)
+  nisn     Int
+
+  id_user Int  @unique
+  user    User @relation(fields: [id_user], references: [id_user])
+
+  kelas_id Int
+  kelas    Kelas @relation(fields: [kelas_id], references: [id_kelas])
+
+  absens Absen[]
+  poins  Poin[]
+}
+
+model Kelas {
+  id_kelas   Int    @id @default(autoincrement())
+  nama_kelas String @db.VarChar(100)
+  jurusan    String @db.VarChar(100)
+
+  siswa Siswa[]
+}
+
+model Absen {
+  id_absen Int      @id @default(autoincrement())
+  tanggal  DateTime
+  status   String   @db.VarChar(100)
+
+  user_guru Int
+  guru      Guru @relation(fields: [user_guru], references: [id_guru])
+
+  user_siswa Int
+  siswa      Siswa @relation(fields: [user_siswa], references: [id_siswa])
+}
+
+model Kategori_Poin {
+  id_kategori   Int    @id @default(autoincrement())
+  nama_kategori String @db.VarChar(100)
+  tipe          String
+  nilai_default Int
+
+  poins Poin[]
+}
+
+model Poin {
+  id_poin     Int      @id @default(autoincrement())
+  jumlah_poin Int
+  tanggal     DateTime
+
+  user_siswa Int
+  siswa      Siswa @relation(fields: [user_siswa], references: [id_siswa])
+
+  kategori_id Int
+  kategori    Kategori_Poin @relation(fields: [kategori_id], references: [id_kategori])
+}
+
+enum Role {
+  GURU
+  SISWA
+}
