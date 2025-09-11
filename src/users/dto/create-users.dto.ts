@@ -1,16 +1,16 @@
-import { IsInt, IsNotEmpty, IsString } from 'class-validator';
+import { IsEmail, IsEnum, IsNotEmpty } from 'class-validator';
 
-export class CreateUsersDto {
+export class CreateUserDto {
     @IsNotEmpty()
-    @IsString()
-    nama: string;
-
-    @IsNotEmpty()
-    @IsInt()
-    nip: number;
+    @IsEmail()
+    email: string;
 
     @IsNotEmpty()
-    @IsInt()
-    user_id: number;
+    password: string;
 
+    @IsNotEmpty()
+    @IsEnum(['GURU', 'SISWA'], {
+        message: 'role harus GURU atau SISWA',
+    })
+    role: 'GURU' | 'SISWA';
 }
