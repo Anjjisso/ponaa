@@ -11,13 +11,14 @@ export class GuruService {
         return this.prisma.guru.create({
             data: {
                 nama: data.nama,
-                nip: data.nip,
+                nip: data.nip, // number
                 user: {
-                    connect: { id_user: data.user_id }, // id dari tabel User
+                    connect: { id_user: data.user_id }, // connect ke user
                 },
             },
         });
     }
+
 
 
     findAll() {

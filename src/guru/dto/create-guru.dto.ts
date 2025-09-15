@@ -1,8 +1,7 @@
-import { IsInt, IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsInt } from 'class-validator';
 
 export class CreateGuruDto {
     @IsNotEmpty()
-    @IsString()
     nama: string;
 
     @IsNotEmpty()
@@ -12,5 +11,4 @@ export class CreateGuruDto {
     @IsNotEmpty()
     @IsInt()
     user_id: number;
-
 }

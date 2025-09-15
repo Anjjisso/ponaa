@@ -73,7 +73,6 @@ model Absen {
 model Kategori_Poin {
   id_kategori   Int    @id @default(autoincrement())
   nama_kategori String @db.VarChar(100)
-  tipe          String
   nilai_default Int
 
   poins Poin[]
