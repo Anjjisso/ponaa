@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { GuruService } from './guru.service';
 import { CreateGuruDto } from './dto/create-guru.dto';
 import { UpdateGuruDto } from './dto/update-guru.dto';
+import { Roles } from 'src/auth/roles.detector';
 
 @Controller('guru')
 export class GuruController {

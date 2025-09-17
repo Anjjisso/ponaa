@@ -1,32 +1,28 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-import { UsersService } from '../users/users.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { LoginDto } from './dto/login.dto';
 
 @Injectable()
 export class AuthService {
     constructor(
-        private usersService: UsersService,
+        private prisma: PrismaService,
         private jwtService: JwtService,
     ) { }
 
-    async validateUser(email: string, pass: string) {
-        const user = await this.usersService.findByEmail(email);
+    async login(dto: LoginDto) {
+        const user = await this.prisma.user.findUnique({
+            where: { email: dto.email },
+        });
         if (!user) {
-            throw new UnauthorizedException('Email not found');
+            throw new UnauthorizedException('Email tidak ditemukan');
         }
 
-        const isMatch = await bcrypt.compare(pass, user.password);
+        const isMatch = await bcrypt.compare(dto.password, user.password);
         if (!isMatch) {
-            throw new UnauthorizedException('Invalid password');
+            throw new UnauthorizedException('Password salah');
         }
-
-        return user;
-    }
-
-    async login(loginDto: LoginDto) {
-        const user = await this.validateUser(loginDto.email, loginDto.password);
 
         const payload = { sub: user.id_user, email: user.email, role: user.role };
         return {
