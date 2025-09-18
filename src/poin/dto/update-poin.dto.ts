@@ -1,6 +1,11 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreatePoinDto } from './create-poin.dto';
+import { IsInt, IsOptional } from 'class-validator';
 
-export class UpdatePoinDto extends PartialType(CreatePoinDto) {
-    jumlah_poin?: number;
+export class UpdatePoinDto {
+    @IsOptional()
+    @IsInt()
+    user_siswa?: number;
+
+    @IsOptional()
+    @IsInt()
+    kategori_id?: number;
 }

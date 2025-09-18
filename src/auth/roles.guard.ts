@@ -1,14 +1,23 @@
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+// roles.guard.ts
+import { Injectable, CanActivate, ExecutionContext, ForbiddenException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
+import { ROLES_KEY } from './roles.detector';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
     constructor(private reflector: Reflector) { }
 
     canActivate(context: ExecutionContext): boolean {
-        const roles = this.reflector.get<string[]>('roles', context.getHandler());
-        if (!roles) return true;
+        const requiredRoles = this.reflector.getAllAndOverride<string[]>(ROLES_KEY, [
+            context.getHandler(),
+            context.getClass(),
+        ]);
+        if (!requiredRoles) return true;
+
         const { user } = context.switchToHttp().getRequest();
-        return roles.includes(user.role);
+        if (!user || !requiredRoles.includes(user.role)) {
+            throw new ForbiddenException('Anda tidak punya akses ke resource ini');
+        }
+        return true;
     }
 }

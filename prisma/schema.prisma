@@ -64,6 +64,8 @@ model Poin {
 
   kategori_id Int
   kategori    Kategori_Poin @relation(fields: [kategori_id], references: [id_kategori])
+
+  foto Bytes?
 }
 
 enum Role {

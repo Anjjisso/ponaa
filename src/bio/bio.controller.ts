@@ -1,22 +1,39 @@
-import { Controller, Get, UseGuards, Req } from '@nestjs/common';
+// src/bio/bio.controller.ts
+import {
+    Controller,
+    Get,
+    Req,
+    UseGuards,
+    ForbiddenException,
+} from '@nestjs/common';
 import { BioService } from './bio.service';
 import { JwtAuthGuard } from '../auth/jwt.guard';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('bio')
+@ApiBearerAuth('JWT-auth')
 @Controller('bio')
 @UseGuards(JwtAuthGuard)
 export class BioController {
     constructor(private readonly bioService: BioService) { }
 
     // Guru melihat bio miliknya
-    @Get('guru')
+    @Get('GURU')
     async getGuruBio(@Req() req) {
-        // pastikan token punya payload id_guru
-        return this.bioService.getGuruBio(req.user.id_guru);
+        const { id_guru } = req.user;
+        if (!id_guru) {
+            throw new ForbiddenException('Token tidak memiliki id_guru');
+        }
+        return this.bioService.getGuruBio(id_guru);
     }
 
     // Siswa melihat bio miliknya
-    @Get('siswa')
+    @Get('SISWA')
     async getSiswaBio(@Req() req) {
-        return this.bioService.getSiswaBio(req.user.id_siswa);
+        const { id_siswa } = req.user;
+        if (!id_siswa) {
+            throw new ForbiddenException('Token tidak memiliki id_siswa');
+        }
+        return this.bioService.getSiswaBio(id_siswa);
     }
 }

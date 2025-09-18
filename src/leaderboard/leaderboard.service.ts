@@ -1,3 +1,4 @@
+// src/leaderboard/leaderboard.service.ts
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 
@@ -6,23 +7,24 @@ export class LeaderboardService {
     constructor(private prisma: PrismaService) { }
 
     /**
-     * Ambil semua siswa beserta total poin mereka
+     * Ambil semua siswa beserta total poin mereka,
+     * urut dari poin tertinggi
      */
-    async getLeaderboard() {
+    async getLeaderboard(limit?: number) {
         const siswaList = await this.prisma.siswa.findMany({
-            include: {
-                poins: true, // sesuai dengan nama di schema
-            },
+            include: { poins: true }, // relasi ke tabel Poin
         });
 
-        return siswaList
+        const leaderboard = siswaList
             .map((s) => ({
                 id_siswa: s.id_siswa,
                 nama: s.nama,
                 kelas: s.kelas,
                 totalPoin: s.poins.reduce((acc, p) => acc + p.jumlah_poin, 0),
             }))
-            .sort((a, b) => b.totalPoin - a.totalPoin); // urut poin terbesar
+            .sort((a, b) => b.totalPoin - a.totalPoin);
+
+        return limit ? leaderboard.slice(0, limit) : leaderboard;
     }
 
     /**

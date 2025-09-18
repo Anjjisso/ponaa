@@ -11,9 +11,10 @@ import { PoinModule } from './poin/poin.module';
 import { BioModule } from './bio/bio.module';
 import { LeaderboardModule } from './leaderboard/leaderboard.module';
 import { APP_GUARD } from '@nestjs/core';
+import { SiswaModule } from './siswa/siswa.module';
 
 @Module({
-  imports: [PrismaModule, UsersModule, AuthModule, GuruModule, DataKpModule, PoinModule, BioModule, LeaderboardModule],
+  imports: [PrismaModule, UsersModule, AuthModule, GuruModule, DataKpModule, PoinModule, BioModule, LeaderboardModule, SiswaModule],
   providers: [GuruService, DataKpService, PoinService
   ],
 })
