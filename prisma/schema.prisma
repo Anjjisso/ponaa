@@ -31,43 +31,18 @@ model Guru {
 
   user_id Int  @unique
   user    User @relation(fields: [user_id], references: [id_user])
-
-  absens Absen[]
 }
 
 model Siswa {
-  id_siswa Int    @id @default(autoincrement())
-  nama     String @db.VarChar(500)
-  nisn     Int
+  id_siswa   Int    @id @default(autoincrement())
+  nama       String @db.VarChar(500)
+  nisn       Int
+  id_user    Int    @unique
+  user       User   @relation(fields: [id_user], references: [id_user])
+  kelas      String @db.VarChar(100)
+  total_poin Int    @default(0)
 
-  id_user Int  @unique
-  user    User @relation(fields: [id_user], references: [id_user])
-
-  kelas_id Int
-  kelas    Kelas @relation(fields: [kelas_id], references: [id_kelas])
-
-  absens Absen[]
-  poins  Poin[]
-}
-
-model Kelas {
-  id_kelas   Int    @id @default(autoincrement())
-  nama_kelas String @db.VarChar(100)
-  jurusan    String @db.VarChar(100)
-
-  siswa Siswa[]
-}
-
-model Absen {
-  id_absen Int      @id @default(autoincrement())
-  tanggal  DateTime
-  status   String   @db.VarChar(100)
-
-  user_guru Int
-  guru      Guru @relation(fields: [user_guru], references: [id_guru])
-
-  user_siswa Int
-  siswa      Siswa @relation(fields: [user_siswa], references: [id_siswa])
+  poins Poin[]
 }
 
 model Kategori_Poin {
@@ -88,9 +63,12 @@ model Poin {
 
   kategori_id Int
   kategori    Kategori_Poin @relation(fields: [kategori_id], references: [id_kategori])
+
+  foto Bytes?
 }
 
 enum Role {
   GURU
   SISWA
+  ADMIN
 }
