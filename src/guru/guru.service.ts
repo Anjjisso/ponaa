@@ -11,9 +11,9 @@ export class GuruService {
         return this.prisma.guru.create({
             data: {
                 nama: data.nama,
-                nip: data.nip, // number
+                nip: data.nip,
                 user: {
-                    connect: { id_user: data.user_id }, // connect ke user
+                    connect: { id_user: data.user_id },
                 },
             },
         });
