@@ -25,25 +25,25 @@ export class SiswaController {
     constructor(private readonly siswaService: SiswaService) { }
 
     @Post()
-    @Roles('ADMIN')
+    @Roles('ADMIN', 'GURU')
     create(@Body() dto: CreateSiswaDto) {
         return this.siswaService.create(dto);
     }
 
     @Get()
-    @Roles('ADMIN')
+    @Roles('ADMIN', 'GURU')
     findAll() {
         return this.siswaService.findAll();
     }
 
     @Get(':id')
-    @Roles('ADMIN')
+    @Roles('ADMIN', 'GURU')
     findOne(@Param('id', ParseIntPipe) id: number) {
         return this.siswaService.findOne(id);
     }
 
     @Patch(':id')
-    @Roles('ADMIN')
+    @Roles('ADMIN', 'GURU')
     update(
         @Param('id', ParseIntPipe) id: number,
         @Body() dto: UpdateSiswaDto,
@@ -52,7 +52,7 @@ export class SiswaController {
     }
 
     @Delete(':id')
-    @Roles('ADMIN')
+    @Roles('ADMIN', 'GURU')
     remove(@Param('id', ParseIntPipe) id: number) {
         return this.siswaService.remove(id);
     }

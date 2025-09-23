@@ -12,10 +12,12 @@ import { BioModule } from './bio/bio.module';
 import { LeaderboardModule } from './leaderboard/leaderboard.module';
 import { APP_GUARD } from '@nestjs/core';
 import { SiswaModule } from './siswa/siswa.module';
+import { PoinStatistikService } from './poin-statistik/poin-statistik.service';
+import { PoinStatistikModule } from './poin-statistik/poin-statistik.module';
 
 @Module({
-  imports: [PrismaModule, UsersModule, AuthModule, GuruModule, DataKpModule, PoinModule, BioModule, LeaderboardModule, SiswaModule],
-  providers: [GuruService, DataKpService, PoinService
+  imports: [PrismaModule, UsersModule, AuthModule, GuruModule, DataKpModule, PoinModule, BioModule, LeaderboardModule, SiswaModule, PoinStatistikModule],
+  providers: [GuruService, DataKpService, PoinService, PoinStatistikService
   ],
 })
 export class AppModule { }

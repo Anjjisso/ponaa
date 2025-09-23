@@ -34,14 +34,13 @@ model Guru {
 }
 
 model Siswa {
-  id_siswa Int    @id @default(autoincrement())
-  nama     String @db.VarChar(500)
-  nisn     Int
-
-  id_user Int  @unique
-  user    User @relation(fields: [id_user], references: [id_user])
-
-  kelas String @db.VarChar(100)
+  id_siswa   Int    @id @default(autoincrement())
+  nama       String @db.VarChar(500)
+  nisn       Int
+  id_user    Int    @unique
+  user       User   @relation(fields: [id_user], references: [id_user])
+  kelas      String @db.VarChar(100)
+  total_poin Int    @default(0)
 
   poins Poin[]
 }
