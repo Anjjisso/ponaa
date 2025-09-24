@@ -27,7 +27,7 @@ async function bootstrap() {
 
   // --- CORS ---
   app.enableCors({
-    origin: 'http://localhost:3001', // alamat FE (Next.js)
+    origin: 'http://localhost:3000', // alamat FE (Next.js)
     credentials: true,
   });
 
