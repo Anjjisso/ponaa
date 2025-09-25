@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
+import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateGuruDto } from './dto/create-guru.dto';
 import { UpdateGuruDto } from './dto/update-guru.dto';
 
@@ -7,25 +7,36 @@ import { UpdateGuruDto } from './dto/update-guru.dto';
 export class GuruService {
     constructor(private prisma: PrismaService) { }
 
-    create(data: CreateGuruDto) {
+    async create(dto: CreateGuruDto) {
+        // cari user role GURU yang belum dipakai
+        let user = await this.prisma.user.findFirst({
+            where: { role: 'GURU', guru: null },
+        });
+
+        // kalau tidak ada, buat user baru otomatis
+        if (!user) {
+            user = await this.prisma.user.create({
+                data: {
+                    email: `${dto.nip}@guru.com`, // bisa diganti sesuai kebutuhan
+                    password: 'password123',      // default password (hash sebaiknya)
+                    role: 'GURU',
+                },
+            });
+        }
+
         return this.prisma.guru.create({
             data: {
-                nama: data.nama,
-                nip: data.nip,
-                jenis_kelamin: data.jenis_kelamin,
-                user: {
-                    connect: { id_user: data.user_id },
-                },
+                nama: dto.nama,
+                nip: dto.nip,
+                jenis_kelamin: dto.jenis_kelamin,
+                user: { connect: { id_user: user.id_user } },
             },
+            include: { user: true },
         });
     }
 
-
-
     findAll() {
-        return this.prisma.guru.findMany({
-            include: { user: true }, // kalau ada relasi ke User
-        });
+        return this.prisma.guru.findMany({ include: { user: true } });
     }
 
     findOne(id_guru: number) {
@@ -35,10 +46,10 @@ export class GuruService {
         });
     }
 
-    update(id_guru: number, data: UpdateGuruDto) {
+    update(id_guru: number, dto: UpdateGuruDto) {
         return this.prisma.guru.update({
             where: { id_guru },
-            data,
+            data: dto,
         });
     }
 

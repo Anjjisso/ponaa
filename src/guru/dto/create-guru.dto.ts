@@ -1,22 +1,24 @@
-import { IsNotEmpty, IsInt } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
+import { IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+
+export enum JenisKelamin {
+    LAKI_LAKI = 'LAKI_LAKI',
+    PEREMPUAN = 'PEREMPUAN',
+}
 
 export class CreateGuruDto {
-    @ApiProperty({ example: 'Ahmad Fauzi' })
+    @IsString()
     @IsNotEmpty()
     nama: string;
 
-    @ApiProperty({ example: 123456789 })
-    @IsNotEmpty()
-    @IsInt()
+    @IsNumber()
     nip: number;
 
-    @ApiProperty({ example: 1, description: 'ID user' })
-    @IsNotEmpty()
-    @IsInt()
-    user_id: number;
+    @IsEnum(JenisKelamin, {
+        message: 'jenis_kelamin harus LAKI_LAKI atau PEREMPUAN',
+    })
+    jenis_kelamin: JenisKelamin;
 
-    @ApiProperty({ example: 'LAKI_LAKI', enum: ['LAKI_LAKI', 'PEREMPUAN'] })
-    @IsNotEmpty()
-    jenis_kelamin: 'LAKI_LAKI' | 'PEREMPUAN';
+    @IsNumber()
+    @IsOptional()
+    user_id?: number; // opsional kalau backend mau connect ke user yang sudah ada
 }
