@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE `guru` MODIFY `jenis_kelamin` ENUM('LAKI_LAKI', 'PEREMPUAN') NOT NULL DEFAULT 'LAKI_LAKI';
+
+-- AlterTable
+ALTER TABLE `siswa` MODIFY `jenis_kelamin` ENUM('LAKI_LAKI', 'PEREMPUAN') NOT NULL DEFAULT 'LAKI_LAKI';

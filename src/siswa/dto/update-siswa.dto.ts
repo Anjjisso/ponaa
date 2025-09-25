@@ -15,4 +15,7 @@ export class UpdateSiswaDto extends PartialType(CreateSiswaDto) {
 
     @ApiProperty({ example: 'XII RPL' })
     kelas?: string;
+
+    @ApiProperty({ example: 'LAKI_LAKI', enum: ['LAKI_LAKI', 'PEREMPUAN'] })
+    jenis_kelamin?: 'LAKI_LAKI' | 'PEREMPUAN';
 }

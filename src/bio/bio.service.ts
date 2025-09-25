@@ -23,6 +23,7 @@ export class BioService {
             id_guru: guru.id_guru,
             nama: guru.nama,
             nip: guru.nip,
+            jenis_kelamin: guru.jenis_kelamin,
             email: guru.user?.email,
         };
     }

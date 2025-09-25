@@ -1,4 +1,4 @@
-import { IsString, IsInt } from 'class-validator';
+import { IsString, IsInt, IsNotEmpty } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateSiswaDto {
@@ -18,4 +18,8 @@ export class CreateSiswaDto {
     @ApiProperty({ example: 'XII RPL' })
     @IsString()
     kelas: string;
+
+    @ApiProperty({ example: 'LAKI_LAKI', enum: ['LAKI_LAKI', 'PEREMPUAN'] })
+    @IsNotEmpty()
+    jenis_kelamin: 'LAKI_LAKI' | 'PEREMPUAN';
 }
