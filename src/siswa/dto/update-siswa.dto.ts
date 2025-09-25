@@ -1,21 +1,18 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { CreateSiswaDto } from './create-siswa.dto';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiPropertyOptional } from '@nestjs/swagger';
+import { JenisKelamin } from 'src/guru/dto/create-guru.dto';
 
 export class UpdateSiswaDto extends PartialType(CreateSiswaDto) {
-
-    @ApiProperty({ example: 'Budi Santoso' })
+    @ApiPropertyOptional({ example: 'Budi Santoso' })
     nama?: string;
 
-    @ApiProperty({ example: 1234567890 })
+    @ApiPropertyOptional({ example: 1234567890 })
     nisn?: number;
 
-    @ApiProperty({ example: 1, description: 'ID user siswa' })
-    id_user?: number;
-
-    @ApiProperty({ example: 'XII RPL' })
+    @ApiPropertyOptional({ example: 'XII RPL' })
     kelas?: string;
 
-    @ApiProperty({ example: 'LAKI_LAKI', enum: ['LAKI_LAKI', 'PEREMPUAN'] })
-    jenis_kelamin?: 'LAKI_LAKI' | 'PEREMPUAN';
+    @ApiPropertyOptional({ example: 'LAKI_LAKI', enum: JenisKelamin })
+    jenis_kelamin?: JenisKelamin;
 }

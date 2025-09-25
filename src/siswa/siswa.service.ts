@@ -7,9 +7,32 @@ import { UpdateSiswaDto } from './dto/update-siswa.dto';
 export class SiswaService {
     constructor(private prisma: PrismaService) { }
 
-    create(dto: CreateSiswaDto) {
+    async create(dto: CreateSiswaDto) {
+        // cari user role SISWA yang belum dipakai
+        let user = await this.prisma.user.findFirst({
+            where: { role: 'SISWA', siswa: null },
+        });
+
+        // kalau tidak ada, buat user baru otomatis
+        if (!user) {
+            user = await this.prisma.user.create({
+                data: {
+                    email: `${dto.nisn}@siswa.com`, // bisa diganti sesuai kebutuhan
+                    password: 'password123',        // default password (hash sebaiknya)
+                    role: 'SISWA',
+                },
+            });
+        }
+
         return this.prisma.siswa.create({
-            data: dto,
+            data: {
+                nama: dto.nama,
+                nisn: dto.nisn,
+                kelas: dto.kelas,
+                jenis_kelamin: dto.jenis_kelamin,
+                user: { connect: { id_user: user.id_user } },
+            },
+            include: { user: true, poins: true },
         });
     }
 
@@ -34,8 +57,6 @@ export class SiswaService {
     }
 
     remove(id: number) {
-        return this.prisma.siswa.delete({
-            where: { id_siswa: id },
-        });
+        return this.prisma.siswa.delete({ where: { id_siswa: id } });
     }
 }
