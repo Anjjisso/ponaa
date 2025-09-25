@@ -12,6 +12,7 @@ export class GuruService {
             data: {
                 nama: data.nama,
                 nip: data.nip,
+                jenis_kelamin: data.jenis_kelamin,
                 user: {
                     connect: { id_user: data.user_id },
                 },

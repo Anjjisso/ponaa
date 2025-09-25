@@ -15,4 +15,8 @@ export class CreateGuruDto {
     @IsNotEmpty()
     @IsInt()
     user_id: number;
+
+    @ApiProperty({ example: 'LAKI_LAKI', enum: ['LAKI_LAKI', 'PEREMPUAN'] })
+    @IsNotEmpty()
+    jenis_kelamin: 'LAKI_LAKI' | 'PEREMPUAN';
 }
