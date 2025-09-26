@@ -72,13 +72,13 @@ export class BioService {
         }));
 
         return {
-            id_siswa: siswa.id_siswa,
             nama: siswa.nama,
             nisn: siswa.nisn,
             kelas: siswa.kelas,
+            jurusan: siswa.jurusan,
             email: siswa.user?.email ?? null,
             totalPoin,
-            detailKategori,
+
         };
     }
 
