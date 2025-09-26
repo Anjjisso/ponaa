@@ -1,6 +1,7 @@
 // src/leaderboard/leaderboard.service.ts
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { Jurusan } from 'generated/prisma';
 
 @Injectable()
 export class LeaderboardService {
@@ -20,6 +21,7 @@ export class LeaderboardService {
                 id_siswa: s.id_siswa,
                 nama: s.nama,
                 kelas: s.kelas,
+                jurusan: s.jurusan,
                 totalPoin: s.poins.reduce((acc, p) => acc + p.jumlah_poin, 0),
             }))
             .sort((a, b) => b.totalPoin - a.totalPoin);
@@ -42,6 +44,7 @@ export class LeaderboardService {
             id_siswa: siswa.id_siswa,
             nama: siswa.nama,
             kelas: siswa.kelas,
+            Jurusan: siswa.jurusan,
             totalPoin: siswa.poins.reduce((acc, p) => acc + p.jumlah_poin, 0),
         };
     }
