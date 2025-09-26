@@ -29,6 +29,7 @@ export class SiswaService {
                 nama: dto.nama,
                 nisn: dto.nisn,
                 kelas: dto.kelas,
+                jurusan: dto.jurusan,
                 jenis_kelamin: dto.jenis_kelamin,
                 user: { connect: { id_user: user.id_user } },
             },
