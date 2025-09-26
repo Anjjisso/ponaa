@@ -21,7 +21,7 @@ model User {
 model Guru {
   id_guru       Int          @id @default(autoincrement())
   nama          String       @db.VarChar(500)
-  jenis_kelamin Jeniskelamin @default(LAKI_LAKI)
+  jenis_kelamin Jeniskelamin
   nip           Int
 
   user_id Int  @unique
@@ -31,11 +31,12 @@ model Guru {
 model Siswa {
   id_siswa      Int          @id @default(autoincrement())
   nama          String       @db.VarChar(500)
-  jenis_kelamin Jeniskelamin @default(LAKI_LAKI)
+  jenis_kelamin Jeniskelamin
   nisn          Int
   id_user       Int          @unique
   user          User         @relation(fields: [id_user], references: [id_user])
-  kelas         String       @db.VarChar(100)
+  kelas         Kelas
+  jurusan       Jurusan?
   total_poin    Int          @default(0)
 
   poins Poin[]
@@ -72,4 +73,16 @@ enum Role {
 enum Jeniskelamin {
   LAKI_LAKI
   PEREMPUAN
+}
+
+enum Kelas {
+  X
+  XI
+  XII
+}
+
+enum Jurusan {
+  RPL
+  TKJ
+  DKV
 }
