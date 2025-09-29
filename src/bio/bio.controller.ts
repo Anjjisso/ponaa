@@ -5,6 +5,8 @@ import {
     Req,
     UseGuards,
     ForbiddenException,
+    Patch,
+    Body
 } from '@nestjs/common';
 import { BioService } from './bio.service';
 import { JwtAuthGuard } from '../auth/jwt.guard';
@@ -26,6 +28,12 @@ export class BioController {
         }
         return this.bioService.getGuruBio(id_guru);
     }
+
+    @Patch('GURU')
+async updateGuruBio(@Req() req, @Body() body: { nama?: string; nip?: number }) {
+  const { id_guru } = req.user;
+  return this.bioService.updateGuruBio(id_guru, body);
+}
 
     // Siswa melihat bio miliknya
     @Get('SISWA')
