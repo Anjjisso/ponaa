@@ -29,7 +29,7 @@ export class PoinService {
                 data: {
                     jumlah_poin: kategori.nilai_default,
                     tanggal: new Date(),
-                    foto: fileBuffer ?? null, // simpan foto kalau ada
+                    foto: fileBuffer ?? null, // simpan Buffer
                     siswa: { connect: { id_siswa: data.user_siswa } },
                     kategori: { connect: { id_kategori: data.kategori_id } },
                 },

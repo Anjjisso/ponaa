@@ -28,6 +28,15 @@ export class BioService {
         };
     }
 
+    // src/bio/bio.service.ts
+async updateGuruBio(id_guru: number, data: { nama?: string; nip?: number }) {
+  return this.prisma.guru.update({
+    where: { id_guru },
+    data,
+  });
+}
+
+
 
     async getSiswaBio(id_siswa: number) {
         const siswa = await this.prisma.siswa.findUnique({

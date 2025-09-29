@@ -1,4 +1,3 @@
-// src/poin/poin.controller.ts
 import {
     Controller,
     Post,
@@ -12,6 +11,8 @@ import {
     NotFoundException,
     Res,
     ParseIntPipe,
+    UseInterceptors,
+    UploadedFile,
 } from '@nestjs/common';
 import type { Response } from 'express';
 import { PoinService } from './poin.service';
@@ -21,6 +22,7 @@ import { JwtAuthGuard } from '../auth/jwt.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.detector';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @ApiTags('poin')
 @ApiBearerAuth('JWT-auth')
@@ -30,12 +32,17 @@ export class PoinController {
     constructor(private readonly poinService: PoinService) { }
 
     // ===========================
-    // CREATE poin (hanya GURU)
+    // CREATE poin + upload foto
     // ===========================
     @Roles('GURU')
     @Post()
-    create(@Body() dto: CreatePoinDto) {
-        return this.poinService.create(dto);
+    @UseInterceptors(FileInterceptor('foto'))
+    create(@Body() body: any, @UploadedFile() file?: Express.Multer.File) {
+        const dto: CreatePoinDto = {
+            user_siswa: Number(body.user_siswa),
+            kategori_id: Number(body.kategori_id),
+        };
+        return this.poinService.create(dto, file?.buffer);
     }
 
     // ===========================
@@ -88,8 +95,6 @@ export class PoinController {
         return this.poinService.remove(id);
     }
 
-
-
     // ===========================
     // GET FOTO poin
     // ===========================
@@ -111,5 +116,4 @@ export class PoinController {
         const total = await this.poinService.getTotalBySiswa(+id);
         return { id_siswa: +id, totalPoin: total };
     }
-
 }
